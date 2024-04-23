@@ -1,6 +1,3 @@
-import os
-import uuid
-import logging
 from pydantic import BaseModel
 
 from fastapi import FastAPI, Request, Depends, HTTPException, Response, Cookie

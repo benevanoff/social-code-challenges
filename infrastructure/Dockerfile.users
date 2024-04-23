@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENV DB_HOST="db_marley"
+ENV DB_HOST="db_mysql"
 ENV CACHE_HOST="redis"
 
 EXPOSE 8080
