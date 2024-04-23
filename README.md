@@ -171,6 +171,20 @@ List the top 10 submissions for a challenge, sorted by sum of votes.
 GET /challenge/submissions/{challenge_id}
 ```
 
+## Infrastructure
+
+The `infrastructure` folder defines the infrastructure necessary to deploy the application, as code.
+
+`infrastructure/docker-compose.yml` defines a deployment template to run all the necesssary services on a single host.
+
+The template includes
+* a Redis server
+* a MySQL server with a database schema defined in `infrastructure/schema.sql`
+* A REST server for the users microservices defined in `infrastructure/Dockerfile.users`
+* A REST server for the challenges microservices defined in `infrastructure/Dockerfile.challenges`
+
+To run the deployment, navigate to the `infrastructure` folder and run `docker compose up --build`
+
 ## User Interface
 
 TODO
