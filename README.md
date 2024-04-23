@@ -20,11 +20,11 @@ For each challenge, there should be a page /leaderboards/{challenge_id} which di
 
 The app will be composed of 2 REST microservices on the backend. One microservice for user management and authentication and one microservice for managing challenges and voting. The JavaScript client application will make calls to both of these services to render the frontend.
 
-## User Microservice
+## Users Microservice
 
-The user microservice will provide a set of REST endpoints for registering new users, authenticating users, creating user sessions and destroying user sessions.
+The users microservice will provide a set of REST endpoints for registering new users, authenticating users, creating user sessions and destroying user sessions.
 
-The user microservice will manage a `users` MySQL table on the backend that tracks each user's username, password, and email.
+The users microservice will manage a `users` MySQL table on the backend that tracks each user's username, password, and email.
 
 A Redis NoSQL database will be used to store the user sessions details where the keys in the database are session IDs and the values are datum associated with the user session.
 
@@ -79,4 +79,27 @@ The logout command destroy's the user's current session on the backend by deleti
 
 ```
 POST /users/logout
+```
+
+## Challenges Microservice
+
+### Create a Challenge
+
+Create a new challenge by specifying a challenge name, objective/description, a start date, and challenge end date.
+
+Only available to `admin` users.
+
+Example Request:
+```
+POST /challenges/create
+HEADERS:
+    Content-Type: application/json
+    Cookie: session_id=abc123
+BODY:
+    {
+        "name": "CRUD App Challenge",
+        "objective_description": "Participants will create an application that incorporates the fundamental operations of Create, Read, Update, Delete (CRUD). This challenge aims...",
+        "start_date": 1701882792,
+        "end_date: 1713882816
+    }
 ```
