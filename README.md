@@ -28,7 +28,7 @@ The users microservice will manage a `users` MySQL table on the backend that tra
 
 A Redis NoSQL database will be used to store the user sessions details where the keys in the database are session IDs and the values are datum associated with the user session.
 
-### Interface
+### REST Interface
 
 #### Registration
 
@@ -83,7 +83,11 @@ POST /users/logout
 
 ## Challenges Microservice
 
-### Create a Challenge
+The challenges microservice manages a user's interaction with the challenge/leaderboard/voting aspect of the application.
+
+### REST Interface
+
+#### Create a Challenge
 
 Create a new challenge by specifying a challenge name, objective/description, a start date, and challenge end date.
 
@@ -103,3 +107,70 @@ BODY:
         "end_date: 1713882816
     }
 ```
+
+#### Register for a Challenge
+
+A user may POST to this route before the challenge's start_date to register (aka signal intent to participate in) for an up coming challenge.
+
+The user must be logged in to use this route.
+
+Example Request:
+```
+POST /challenges/register/{challenge_id}
+HEADERS:
+    Content-Type: application/json
+    Cookie: session_id=abc123
+```
+
+#### Link Project to Submission
+
+```
+POST /submission/link_project/{submission_id}
+HEADERS:
+    Content-Type: application/json
+    Cookie: session_id=abc123
+BODY:
+    {
+        "link": "https://github.com/benevanoff/social-code-challenges"
+    }
+```
+
+#### Post News for Submission
+
+```
+POST /submission/news/create/{submission_id}
+HEADERS:
+    Content-Type: application/json
+    Cookie: session_id=abc123
+BODY:
+    {
+        "content": "This week we created a technical design document for our social code challenge app. The document describes what our app should do and details the planned architecure for the plan. It also provides a rough plan for the REST interface. This will help us in our planning because..."
+    }
+```
+
+#### Vote for a Challenge Submission
+
+Vote for a submission. Each user may place three votes per challenge, each with a different weight. The weights act as multipliers. A vote with weight 3 gives 3 points while a vote with weight 1 only gives 1 point. A user may use each weight only once per challenge.
+
+```
+POST /submission/vote/{submission_id}
+HEADERS:
+    Content-Type: application/json
+    Cookie: session_id=abc123
+BODY:
+    {
+        "weight": 3
+    }
+```
+
+#### Get Challenge Leaderboard
+
+List the top 10 submissions for a challenge, sorted by sum of votes.
+
+```
+GET /challenge/submissions/{challenge_id}
+```
+
+## User Interface
+
+TODO
