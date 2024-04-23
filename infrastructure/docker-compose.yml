@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+# Dependency Services
+  db_mysql: # MySQL Server
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    volumes:
+      - db_mysql:/var/lib/mysql
+
+  redis: # Redis Server used for Session Caching
+    image: 'redis:alpine'
+    command: redis-server --requirepass yourpasswordkkfkfa
+
+# Application Servers
+  users_microservice:
+    build:
+      context: ../backend/users_microservice
+      dockerfile: ../../infrastructure/Dockerfile.users
+    volumes:
+      - ../backend/users_microservice:/app
+    ports:
+      - 8080:8080
+
+  challenges_microservice:
+    build:
+      context: ../backend/challenges_microservice
+      dockerfile: ../../infrastructure/Dockerfile.challenges
+    volumes:
+      - ../backend/challenges_microservice:/app
+    ports:
+      - 8000:8000
+
+volumes:
+  db_mysql:

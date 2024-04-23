@@ -1,0 +1,10 @@
+DROP DATABASE IF EXISTS `sql_db`;
+CREATE DATABASE sql_db;
+USE sql_db;
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE users (
+    username VARCHAR(255) PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
