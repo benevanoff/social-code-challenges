@@ -1,6 +1,7 @@
 uvicorn
 fastapi
 aiomysql
+aiohttp
 starlette-session
 cryptography
 pytest

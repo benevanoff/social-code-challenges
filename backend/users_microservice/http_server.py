@@ -84,7 +84,7 @@ async def user_registration(request:RegistrationRequest, response:Response, sql_
     hashed_password = hash_password(request.password)
     async with sql_client.cursor() as cur:
         await cur.execute("INSERT IGNORE INTO users (username, password, email) VALUES (%s, %s, %s)", (request.username, hashed_password, request.email))
-    return {"code": 200}
+    return 200
 
 # User Login Route
 class LoginRequest(BaseModel):
@@ -132,11 +132,14 @@ async def users_whoami(session_id:str=Cookie(None), sql_client=Depends(get_db), 
     This route looks up the session cookie in the Redis database and should return details about the associated user.
     """
     if not session_id:
-        return
-    username = session_storage.getUserFromSession(session_id)
+        raise HTTPException(status_code=403)
+    try:
+        username = session_storage.getUserFromSession(session_id)
+    except:
+        raise HTTPException(status_code=403)
     async with sql_client.cursor() as cur:
         await cur.execute("""
-            SELECT username, email
+            SELECT username, email, is_admin
             FROM users
             WHERE username = %s
             """, (username))
