@@ -24,3 +24,27 @@ app.add_middleware(
 @app.get("/")
 def root():
     return "Hello Challenges"
+
+@app.post("/challenges/create")
+async def create_challenge():
+    pass
+
+@app.post("/challenges/register/{challenge_id}")
+async def register_for_challenge():
+    pass
+
+@app.post("/challenges/submission/link_project/{submission_id}")
+async def link_project():
+    pass
+
+@app.post("/challenges/submission/news/create/{submission_id}")
+async def post_news():
+    pass
+
+@app.post("/challenges/submission/vote/{submission_id}")
+async def vote():
+    pass
+
+@app.get("/challenges/submissions/{challenge_id}")
+async def get_challenge_submissions():
+    pass

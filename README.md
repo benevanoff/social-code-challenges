@@ -125,7 +125,7 @@ HEADERS:
 #### Link Project to Submission
 
 ```
-POST /submission/link_project/{submission_id}
+POST /challenges/submission/link_project/{submission_id}
 HEADERS:
     Content-Type: application/json
     Cookie: session_id=abc123
@@ -138,7 +138,7 @@ BODY:
 #### Post News for Submission
 
 ```
-POST /submission/news/create/{submission_id}
+POST /challenges/submission/news/create/{submission_id}
 HEADERS:
     Content-Type: application/json
     Cookie: session_id=abc123
@@ -153,7 +153,7 @@ BODY:
 Vote for a submission. Each user may place three votes per challenge, each with a different weight. The weights act as multipliers. A vote with weight 3 gives 3 points while a vote with weight 1 only gives 1 point. A user may use each weight only once per challenge.
 
 ```
-POST /submission/vote/{submission_id}
+POST /challenges/submission/vote/{submission_id}
 HEADERS:
     Content-Type: application/json
     Cookie: session_id=abc123
@@ -168,7 +168,7 @@ BODY:
 List the top 10 submissions for a challenge, sorted by sum of votes.
 
 ```
-GET /challenge/submissions/{challenge_id}
+GET /challenges/submissions/{challenge_id}
 ```
 
 ## Infrastructure

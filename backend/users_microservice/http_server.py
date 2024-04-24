@@ -78,6 +78,9 @@ class RegistrationRequest(BaseModel):
     email: str
 @app.post("/users/register")
 async def user_registration(request:RegistrationRequest, response:Response, sql_client=Depends(get_db)):
+    """
+    To register a new user, a new row is inserted to the users MySQL table including the user's email, username, and a salted [SHA-256 hash](https://en.wikipedia.org/wiki/SHA-2) of the user's password.
+    """
     hashed_password = hash_password(request.password)
     async with sql_client.cursor() as cur:
         await cur.execute("INSERT IGNORE INTO users (username, password, email) VALUES (%s, %s, %s)", (request.username, hashed_password, request.email))
@@ -89,6 +92,11 @@ class LoginRequest(BaseModel):
     password: str
 @app.post("/users/login")
 async def user_login(request:LoginRequest, response:Response, sql_client=Depends(get_db), session_storage=Depends(get_sessions)):
+    """
+    To login a user, the username+password pair is authenticated by looking up the username in the MySQL database, hashing the input with the salt, and then comparing it to the stored password.
+
+    If the authentication is successful, then a session will be created for the user.
+    """
     # verify password is correct
     # hash the input - the data is hashed in the database
     hashed_password = hash_password(request.password)
@@ -108,6 +116,9 @@ async def user_login(request:LoginRequest, response:Response, sql_client=Depends
 
 @app.post("/users/logout")
 async def users_logout(response:Response, session_id:str=Cookie(None), session_storage=Depends(get_sessions)):
+    """
+    The logout command destroy's the user's current session on the backend by deleting the session key from Redis.
+    """
     # destroy sessioroutern by deleting session entry from Redis
     if not session_id:
         return
@@ -117,6 +128,9 @@ async def users_logout(response:Response, session_id:str=Cookie(None), session_s
 
 @app.get("/users/whoami")
 async def users_whoami(session_id:str=Cookie(None), sql_client=Depends(get_db), session_storage=Depends(get_sessions)):
+    """
+    This route looks up the session cookie in the Redis database and should return details about the associated user.
+    """
     if not session_id:
         return
     username = session_storage.getUserFromSession(session_id)
