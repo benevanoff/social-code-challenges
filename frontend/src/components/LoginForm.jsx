@@ -24,7 +24,7 @@ const LoginForm = () => {
     <div className="login-form--container">
       <form className="login-form">
         <div className="login-form--username login-form--input">
-          <label for="username">Username</label>
+          <label htmlFor="username">Username</label>
           <input
             name="username"
             type="text"
@@ -35,7 +35,7 @@ const LoginForm = () => {
         </div>
 
         <div className="login-form--password login-form--input">
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             name="password"
             type="password"
