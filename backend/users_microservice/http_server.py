@@ -113,6 +113,8 @@ async def user_login(request:LoginRequest, response:Response, sql_client=Depends
     session_id = session_storage.makeNewUserSession(request.username)
     # return session id in response body and cookie
     response.set_cookie(key="session_id", value=session_id)
+    
+    return 200
 
 @app.post("/users/logout")
 async def users_logout(response:Response, session_id:str=Cookie(None), session_storage=Depends(get_sessions)):
@@ -121,10 +123,12 @@ async def users_logout(response:Response, session_id:str=Cookie(None), session_s
     """
     # destroy sessioroutern by deleting session entry from Redis
     if not session_id:
-        return
+        return 200
     session_storage.session_storage_client.delete(session_id)
     # and deleting the session cookie from the client
     response.delete_cookie(key="session_id")
+
+    return 200
 
 @app.get("/users/whoami")
 async def users_whoami(session_id:str=Cookie(None), sql_client=Depends(get_db), session_storage=Depends(get_sessions)):
