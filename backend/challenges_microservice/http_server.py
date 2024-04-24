@@ -47,6 +47,16 @@ async def get_db():
 def root():
     return "Hello Challenges"
 
+async def whoami(session_id:str):
+    async with aiohttp.ClientSession() as session:
+        async with session.get('http://users_microservice:8080/users/whoami', headers={'Cookie': f'session_id={session_id}'}) as response:
+            whoami_response_code = response.status
+            if whoami_response_code == 200:
+                whoami_response_json = await response.json()
+            else:
+                whoami_response_json = {}
+    return whoami_response_json
+
 import datetime
 class CreateChallengeRequest(BaseModel):
     start_date: int
@@ -59,14 +69,8 @@ async def create_challenge(request_body:CreateChallengeRequest, session_id:str=C
 
     Only available to admin users.
     """
-    async with aiohttp.ClientSession() as session:
-        async with session.get('http://users_microservice:8080/users/whoami', headers={'Cookie': f'session_id={session_id}'}) as response:
-            whoami_response_code = response.status
-            if whoami_response_code == 200:
-                whoami_response_json = await response.json()
-            else:
-                whoami_response_json = {}
-    if whoami_response_code != 200 or whoami_response_json.get('is_admin') != 1:
+    whoami_response = await whoami(session_id)
+    if whoami_response.get('is_admin') != 1:
         raise HTTPException(status_code=401)
     async with sql_client.cursor() as cur:
         await cur.execute("INSERT INTO challenges (start_date, end_date, description) VALUES (%s,%s,%s)", 
@@ -75,37 +79,63 @@ async def create_challenge(request_body:CreateChallengeRequest, session_id:str=C
     return 200
 
 @app.post("/challenges/register/{challenge_id}")
-async def register_for_challenge(session_id:str=Cookie(None), sql_client=Depends(get_db)):
+async def register_for_challenge(challenge_id:int, session_id:str=Cookie(None), sql_client=Depends(get_db)):
     """
     A user may POST to this route before the challenge's start_date to register (aka signal intent to participate in) for an up coming challenge.
 
     The user must be logged in to use this route.
     """
-    pass
-    # lookup the user via WHOAMI
-    # insert the username and challend id into challenge_registrations table
-    #async with sql_client.cursor() as cur:
-    #    await cur.execute("INSERT")
+    whoami_response = await whoami(session_id)
+    if not whoami_response:
+        raise HTTPException(status_code=401)
+    async with sql_client.cursor() as cur:
+        await cur.execute("INSERT INTO challenge_registrations (username, challenge_id) VALUES (%s,%s)", (whoami_response.get('username'), challenge_id))
+    return 200
+
+@app.get("/challenges/registrations/{challenge_id}")
+async def get_challenge_registrations(challenge_id:int, sql_client=Depends(get_db)):
+    """
+    List all of the users who have registered for a challenge by username.
+
+    Returns code 404 if the challenge_id is invalid.
+    """
+    async with sql_client.cursor() as cur:
+        await cur.execute("SELECT username FROM challenge_registrations WHERE challenge_id=%s",(challenge_id))
+        query_result = await cur.fetchall()
+    if not query_result:
+        raise HTTPException(status_code=404)
+    return [x['username'] for x in query_result]
 
 @app.post("/challenges/submission/link_project/{submission_id}")
-async def link_project():
+async def link_project(submission_id:int):
+    """
+    TODO
+    """
     pass
 
 @app.post("/challenges/submission/news/create/{submission_id}")
-async def post_news():
+async def post_news(submission_id:int):
+    """
+    TODO
+    """
     pass
 
 @app.post("/challenges/submission/vote/{submission_id}")
-async def vote():
+async def vote(submission_id:int):
     """
     Vote for a submission. Each user may place three votes per challenge, each with a different weight. 
     
     The weights act as multipliers. A vote with weight 3 gives 3 points while a vote with weight 1 only gives 1 point. 
     
     A user may use each weight only once per challenge.
+
+    TODO
     """
     pass
 
 @app.get("/challenges/submissions/{challenge_id}")
-async def get_challenge_submissions():
+async def get_challenge_submissions(challenge_id:int):
+    """
+    TODO
+    """
     pass
