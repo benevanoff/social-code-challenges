@@ -75,8 +75,17 @@ async def create_challenge(request_body:CreateChallengeRequest, session_id:str=C
     return 200
 
 @app.post("/challenges/register/{challenge_id}")
-async def register_for_challenge():
+async def register_for_challenge(session_id:str=Cookie(None), sql_client=Depends(get_db)):
+    """
+    A user may POST to this route before the challenge's start_date to register (aka signal intent to participate in) for an up coming challenge.
+
+    The user must be logged in to use this route.
+    """
     pass
+    # lookup the user via WHOAMI
+    # insert the username and challend id into challenge_registrations table
+    #async with sql_client.cursor() as cur:
+    #    await cur.execute("INSERT")
 
 @app.post("/challenges/submission/link_project/{submission_id}")
 async def link_project():
@@ -88,6 +97,13 @@ async def post_news():
 
 @app.post("/challenges/submission/vote/{submission_id}")
 async def vote():
+    """
+    Vote for a submission. Each user may place three votes per challenge, each with a different weight. 
+    
+    The weights act as multipliers. A vote with weight 3 gives 3 points while a vote with weight 1 only gives 1 point. 
+    
+    A user may use each weight only once per challenge.
+    """
     pass
 
 @app.get("/challenges/submissions/{challenge_id}")

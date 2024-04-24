@@ -17,3 +17,10 @@ CREATE TABLE challenges (
     end_date VARCHAR(255) NOT NULL,
     description TEXT NOT NULL
 );
+
+DROP TABLE IF EXISTS `challenge_registrations`;
+CREATE TABLE challenge_registrations (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    challenge_id VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL
+);
