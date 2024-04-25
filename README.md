@@ -18,7 +18,15 @@ For each challenge, there should be a page /leaderboards/{challenge_id} which di
 
 ## Architecture
 
-The app will be composed of 2 REST microservices on the backend. One microservice for user management and authentication and one microservice for managing challenges and voting. The JavaScript client application will make calls to both of these services to render the frontend.
+The app will be composed of 2 REST microservices on the backend. One microservice for user management and authentication and one microservice for managing challenges and voting.
+
+The users microservice will store persistent user details in a SQL table while ephemeral user sessions will be tracked in a Redis database.
+
+The challenges microservice will store details about each challenge and the challenge submissions in the SQL table. It makes REST calls to to the users microservice for user identification and authentication. APIs in the which require authentication will require a `session_id` cookie from the users microservice login.
+
+The JavaScript client application will make calls to both of these services to render the frontend.
+
+![architecture](./docs/architecture_diagram.png)
 
 ## Users Microservice
 
