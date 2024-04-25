@@ -18,9 +18,18 @@ CREATE TABLE challenges (
     description TEXT NOT NULL
 );
 
-DROP TABLE IF EXISTS `challenge_registrations`;
-CREATE TABLE challenge_registrations (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+DROP TABLE IF EXISTS `submissions`;
+CREATE TABLE submissions (
+    submission_id INT PRIMARY KEY AUTO_INCREMENT,
     challenge_id VARCHAR(255) NOT NULL,
-    username VARCHAR(255) NOT NULL
+    username VARCHAR(255) NOT NULL,
+    code_repository VARCHAR(255) DEFAULT NULL
+);
+
+DROP TABLE IF EXISTS `votes`;
+CREATE TABLE votes (
+    vote_id INT PRIMARY KEY AUTO_INCREMENT,
+    submission_id INT NOT NULL,
+    voter_username VARCHAR(255) NOT NULL,
+    weight INT DEFAULT 1
 );

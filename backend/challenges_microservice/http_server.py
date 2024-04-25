@@ -1,6 +1,7 @@
 import os
 import copy
 import aiohttp
+import datetime
 import aiomysql
 from pydantic import BaseModel
 
@@ -57,7 +58,7 @@ async def whoami(session_id:str):
                 whoami_response_json = {}
     return whoami_response_json
 
-import datetime
+
 class CreateChallengeRequest(BaseModel):
     start_date: int
     end_date: int
@@ -89,7 +90,7 @@ async def register_for_challenge(challenge_id:int, session_id:str=Cookie(None), 
     if not whoami_response:
         raise HTTPException(status_code=401)
     async with sql_client.cursor() as cur:
-        await cur.execute("INSERT INTO challenge_registrations (username, challenge_id) VALUES (%s,%s)", (whoami_response.get('username'), challenge_id))
+        await cur.execute("INSERT INTO submissions (username, challenge_id) VALUES (%s,%s)", (whoami_response.get('username'), challenge_id))
     return 200
 
 @app.get("/challenges/registrations/{challenge_id}")
@@ -100,10 +101,10 @@ async def get_challenge_registrations(challenge_id:int, sql_client=Depends(get_d
     Returns code 404 if the challenge_id is invalid.
     """
     async with sql_client.cursor() as cur:
-        await cur.execute("SELECT username FROM challenge_registrations WHERE challenge_id=%s",(challenge_id))
+        await cur.execute("SELECT username FROM submissions WHERE challenge_id=%s",(challenge_id))
         query_result = await cur.fetchall()
     if not query_result:
-        raise HTTPException(status_code=404)
+        return []
     return [x['username'] for x in query_result]
 
 @app.post("/challenges/submission/link_project/{submission_id}")
@@ -121,7 +122,7 @@ async def post_news(submission_id:int):
     pass
 
 @app.post("/challenges/submission/vote/{submission_id}")
-async def vote(submission_id:int):
+async def vote(submission_id:int, session_id:str=Cookie(None), sql_client=Depends(get_db)):
     """
     Vote for a submission. Each user may place three votes per challenge, each with a different weight. 
     
@@ -129,13 +130,26 @@ async def vote(submission_id:int):
     
     A user may use each weight only once per challenge.
 
-    TODO
+    TODO: implement vote weights
     """
-    pass
+    whoami_response = await whoami(session_id)
+    voter_username = whoami_response.get("username")
+    async with sql_client.cursor() as cur:
+        # check if the user already voted for this submission
+        await cur.execute("SELECT vote_id FROM votes WHERE voter_username=%s", (voter_username))
+        if (await cur.fetchone()):
+            raise HTTPException(status_code=400, detail='You already voted for this submission')
+        await cur.execute("INSERT IGNORE INTO votes (submission_id, voter_username) VALUES (%s,%s)", (submission_id, voter_username))
+    return 200
 
 @app.get("/challenges/submissions/{challenge_id}")
-async def get_challenge_submissions(challenge_id:int):
+async def get_challenge_submissions(challenge_id:int, sql_client=Depends(get_db)):
     """
-    TODO
+    List the top 10 submissions for a challenge
     """
-    pass
+    async with sql_client.cursor() as cur:
+        await cur.execute("SELECT submission_id, username FROM submissions WHERE challenge_id=%s LIMIT 10",(challenge_id))
+        query_result = await cur.fetchall()
+    if not query_result:
+        raise HTTPException(status_code=404)
+    return query_result
