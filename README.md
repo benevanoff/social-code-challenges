@@ -28,6 +28,10 @@ The JavaScript client application will make calls to both of these services to r
 
 ![architecture](./docs/architecture_diagram.png)
 
+## SQL Database Model
+
+![UML](./docs/database_UML.png)
+
 ## Users Microservice
 
 The users microservice will provide a set of REST endpoints for registering new users, authenticating users, creating user sessions and destroying user sessions.
