@@ -114,9 +114,9 @@ HEADERS:
 BODY:
     {
         "name": "CRUD App Challenge",
-        "objective_description": "Participants will create an application that incorporates the fundamental operations of Create, Read, Update, Delete (CRUD). This challenge aims...",
+        "description": "Participants will create an application that incorporates the fundamental operations of Create, Read, Update, Delete (CRUD). This challenge aims...",
         "start_date": 1701882792,
-        "end_date: 1713882816
+        "end_date": 1713882816
     }
 ```
 

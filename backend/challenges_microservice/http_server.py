@@ -4,6 +4,7 @@ import aiohttp
 import datetime
 import aiomysql
 from pydantic import BaseModel
+from typing import Optional
 
 from fastapi import FastAPI, Request, Depends, HTTPException, Response, Cookie
 from fastapi.middleware.cors import CORSMiddleware
@@ -58,6 +59,16 @@ async def whoami(session_id:str):
                 whoami_response_json = {}
     return whoami_response_json
 
+
+@app.get("/challenges")
+async def get_challenges(sql_client=Depends(get_db)):
+    """
+    List all  challenges.
+    """
+    async with sql_client.cursor() as cur:
+        await cur.execute("SELECT * FROM challenges")
+        query_result = await cur.fetchall()
+    return query_result
 
 class CreateChallengeRequest(BaseModel):
     start_date: int
@@ -121,25 +132,27 @@ async def post_news(submission_id:int):
     """
     pass
 
+class VoteRequest(BaseModel):
+    weight: Optional[int] = 1
 @app.post("/challenges/submission/vote/{submission_id}")
-async def vote(submission_id:int, session_id:str=Cookie(None), sql_client=Depends(get_db)):
+async def vote(submission_id:int, request_body:VoteRequest=None, session_id:str=Cookie(None), sql_client=Depends(get_db)):
     """
     Vote for a submission. Each user may place three votes per challenge, each with a different weight. 
     
     The weights act as multipliers. A vote with weight 3 gives 3 points while a vote with weight 1 only gives 1 point. 
     
     A user may use each weight only once per challenge.
-
-    TODO: implement vote weights
     """
     whoami_response = await whoami(session_id)
     voter_username = whoami_response.get("username")
+    if not request_body:
+        request_body = VoteRequest(weight=1)
     async with sql_client.cursor() as cur:
         # check if the user already voted for this submission
         await cur.execute("SELECT vote_id FROM votes WHERE voter_username=%s", (voter_username))
         if (await cur.fetchone()):
             raise HTTPException(status_code=400, detail='You already voted for this submission')
-        await cur.execute("INSERT IGNORE INTO votes (submission_id, voter_username) VALUES (%s,%s)", (submission_id, voter_username))
+        await cur.execute("INSERT IGNORE INTO votes (submission_id, voter_username, weight) VALUES (%s,%s,%s)", (submission_id, voter_username, request_body.weight))
     return 200
 
 @app.get("/challenges/submissions/{challenge_id}")
@@ -148,7 +161,7 @@ async def get_challenge_submissions(challenge_id:int, sql_client=Depends(get_db)
     List the top 10 submissions for a challenge
     """
     async with sql_client.cursor() as cur:
-        await cur.execute("SELECT submission_id, username FROM submissions WHERE challenge_id=%s LIMIT 10",(challenge_id))
+        await cur.execute("SELECT submissions.submission_id, username, SUM(votes.weight) FROM submissions LEFT JOIN votes ON submissions.submission_id=votes.submission_id WHERE challenge_id=%s GROUP BY submissions.submission_id LIMIT 10",(challenge_id))
         query_result = await cur.fetchall()
     if not query_result:
         raise HTTPException(status_code=404)
