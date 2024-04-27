@@ -1,53 +1,97 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import FormInput from "./FormInput";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginData, setLoginData] = useState({
+    username: "",
+    password: "",
+  });
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const loginInputs = [
+    {
+      id: 1,
+      name: "username",
+      type: "text",
+      placeholder: "Username",
+      label: "Username",
+      errorMessage: "Incorrect Username",
+      pattern: "^[a-zA-Z0-9]{4,20}$",
+      required: true,
+    },
+    {
+      id: 2,
+      name: "password",
+      type: "password",
+      placeholder: "Password",
+      label: "Password",
+      errorMessage: "Incorrect Password",
+      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
+      required: true,
+    },
+  ];
+
+  // TODO: Add back POST functionality after validation
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axios
-      .post("http://localhost:8080/users/login", {
-        username: username,
-        password: password,
-      })
-      .then((res) => console.log(res));
+    // TODO: Add error handling for unauthorized login by non-existing user credentials
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/users/login",
+        loginData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
-    setUsername("");
-    setPassword("");
+      if (response.status === 200) {
+        navigate("/home");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+
+    setLoginData({
+      username: "",
+      password: "",
+    });
+  };
+
+  const onChange = (e) => {
+    e.preventDefault();
+    setLoginData({
+      ...loginData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
     <div className="login-form--container">
+      <h1 className="login-form--heading">Login</h1>
       <form className="login-form">
-        <div className="login-form--username login-form--input">
-          <label htmlFor="username">Username</label>
-          <input
-            name="username"
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+        {loginInputs.map((input) => (
+          <FormInput
+            key={input.id}
+            {...input}
+            value={loginData[input.name]}
+            onChange={onChange}
           />
-        </div>
-
-        <div className="login-form--password login-form--input">
-          <label htmlFor="password">Password</label>
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        ))}
+        <button
+          type="submit"
+          className="login-form--submit"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
       </form>
-      <button className="login-form--submit" onClick={handleSubmit}>
-        Submit
-      </button>
     </div>
   );
 };
