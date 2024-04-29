@@ -159,6 +159,8 @@ HEADERS:
 
 #### Link Project to Submission
 
+Record the link to the code repository associated with the challenge submission in the `code_repository` column of the `submissions` database table.
+
 ```
 POST /challenges/submission/link_project/{submission_id}
 HEADERS:
