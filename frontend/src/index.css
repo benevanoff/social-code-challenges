@@ -60,7 +60,8 @@ body {
   font-weight: bold;
 }
 
-.register-form {
+.register-form,
+.login-form {
   width: 100%;
 }
 
