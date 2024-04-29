@@ -6,6 +6,8 @@ import aiomysql
 from pydantic import BaseModel
 from typing import Optional
 
+from sql_client import get_db
+
 from fastapi import FastAPI, Request, Depends, HTTPException, Response, Cookie
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -25,24 +27,6 @@ app.add_middleware(
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "Set-Cookie"]
 )
-
-db_config = {
-    "host": os.environ.get("DB_HOST", "127.0.0.1"),
-    "user": os.environ.get("DB_USER", "root"),
-    "password": os.environ.get("DB_PASS", "kkfkffspassss"),
-    "db": os.environ.get("DB_NAME", "sql_db"),
-    "port": 3306,
-    "autocommit": True
-}
-
-async def get_db():
-    config = copy.deepcopy(db_config)
-    config["cursorclass"] = aiomysql.cursors.DictCursor
-    conn = await aiomysql.connect(**config)
-    try:
-        yield conn
-    finally:
-        conn.close()
 
 # route handlers
 @app.get("/")

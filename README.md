@@ -32,6 +32,20 @@ The JavaScript client application will make calls to both of these services to r
 
 ![UML](./docs/database_UML.png)
 
+## Infrastructure
+
+The `infrastructure` folder defines the infrastructure necessary to deploy the application, as code.
+
+`infrastructure/docker-compose.yml` defines a deployment template to run all the necesssary services on a single host.
+
+The template includes
+* a Redis server
+* a MySQL server with a database schema defined in `infrastructure/schema.sql`
+* A REST server for the users microservices defined in `infrastructure/Dockerfile.users`
+* A REST server for the challenges microservices defined in `infrastructure/Dockerfile.challenges`
+
+To run the deployment, navigate to the `infrastructure` folder and run `docker compose up --build`
+
 ## Users Microservice
 
 The users microservice will provide a set of REST endpoints for registering new users, authenticating users, creating user sessions and destroying user sessions.
@@ -92,6 +106,15 @@ The logout command destroy's the user's current session on the backend by deleti
 ```
 POST /users/logout
 ```
+
+### Testing
+
+To run the test suite for the users microservice:
+
+* Startup the application according to the deployment instraction in the infrastruction section
+* Navigate the the users microservice directory `cd backend/users_microservice`
+* Install the Python module dependencies `python3 -m pip install -r requirements.txt`
+* Run the test suite `python3 -m pytest`
 
 ## Challenges Microservice
 
@@ -183,19 +206,14 @@ List the top 10 submissions for a challenge, sorted by sum of votes.
 GET /challenges/submissions/{challenge_id}
 ```
 
-## Infrastructure
+### Testing
 
-The `infrastructure` folder defines the infrastructure necessary to deploy the application, as code.
+To run the test suite for the challenges microservice:
 
-`infrastructure/docker-compose.yml` defines a deployment template to run all the necesssary services on a single host.
-
-The template includes
-* a Redis server
-* a MySQL server with a database schema defined in `infrastructure/schema.sql`
-* A REST server for the users microservices defined in `infrastructure/Dockerfile.users`
-* A REST server for the challenges microservices defined in `infrastructure/Dockerfile.challenges`
-
-To run the deployment, navigate to the `infrastructure` folder and run `docker compose up --build`
+* Startup the application according to the deployment instraction in the infrastruction section
+* Navigate the the users microservice directory `cd backend/challenges_microservice`
+* Install the Python module dependencies `python3 -m pip install -r requirements.txt`
+* Run the test suite `python3 -m pytest`
 
 ## User Interface
 
