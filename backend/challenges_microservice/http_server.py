@@ -102,12 +102,17 @@ async def get_challenge_registrations(challenge_id:int, sql_client=Depends(get_d
         return []
     return [x['username'] for x in query_result]
 
+class LinkProjectRequest(BaseModel):
+    link: str
 @app.post("/challenges/submission/link_project/{submission_id}")
-async def link_project(submission_id:int):
+async def link_project(submission_id:int, request_body:LinkProjectRequest):
     """
-    TODO
+    Record the link to the code repository associated with the challenge submission
+    in the `code_repository` column of the `submissions` database table.
     """
-    pass
+    print("Path Param", submission_id)
+    print("Body", request_body)
+    return 200
 
 @app.post("/challenges/submission/news/create/{submission_id}")
 async def post_news(submission_id:int):
