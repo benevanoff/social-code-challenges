@@ -155,6 +155,21 @@ async def link_project(
     return 200
 
 
+@app.get("/challenges/submission/{submission_id}")
+async def get_submission_details(submission_id: int, sql_client=Depends(get_db)):
+    """
+    Get details of project submission
+    """
+
+    async with sql_client.cursor() as cur:
+        await cur.execute(
+            "SELECT * FROM submissions WHERE submission_id = %s",
+            (submission_id),
+        )
+        query_result = await cur.fetchall()
+    return query_result
+
+
 @app.post("/challenges/submission/news/create/{submission_id}")
 async def post_news(submission_id: int):
     """
