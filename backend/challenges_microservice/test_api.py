@@ -6,8 +6,22 @@ from http_server import app
 from fastapi.testclient import TestClient
 
 
-class TestUserApis(unittest.TestCase):
+# create test challenge for project submission
+def create_test_challenge_submission():
+    with pymysql.connect(**db_config) as sql_client:
+        with sql_client.cursor() as cur:
+            cur.execute(
+                """INSERT IGNORE INTO submissions (challenge_id, username)
+                VALUES (1, 'TestUser')
+                """
+            )
+            cur.execute("SELECT * FROM submissions WHERE submission_id = 1")
+            test_challenge_submission = cur.fetchone()
 
+    return test_challenge_submission
+
+
+class TestUserApis(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.test_client = TestClient(app)
@@ -17,6 +31,14 @@ class TestUserApis(unittest.TestCase):
                 cur.execute("DELETE FROM challenges")
 
     def test_challenges_apis(self):
-        response = self.test_client.get('/challenges')
+        # create test challenge
+        response = self.test_client.get("/challenges")
         assert response.status_code == 200
         assert response.json() == []
+        # link project repo to submission
+        test_challenge_submission = create_test_challenge_submission()
+        response = self.test_client.post(
+            f"/challenges/submission/link_project/{test_challenge_submission[0]}",
+            json={"link": "http://sample-submission-repository.com"},
+        )
+        assert response.status_code == 200
