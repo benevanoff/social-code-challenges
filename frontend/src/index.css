@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -88,10 +89,12 @@ body {
   cursor: pointer;
   background-color: rgba(var(--accent-clr), 0.8);
 }
+
 .register-form button:disabled,
 .login-form button:disabled {
   cursor: not-allowed;
 }
+
 .register-form button:active,
 .login-form button:active {
   background-color: rgba(var(--accent-clr), 1);
@@ -128,7 +131,7 @@ body {
 }
 
 /* Conditionally change styles based on focused property */
-.form-input input:invalid[focused="true"] ~ span {
+.form-input input:invalid[focused="true"]~span {
   display: block;
 }
 
@@ -165,6 +168,7 @@ body {
   align-items: center;
   gap: 1rem;
 }
+
 .navbar-challenges {
   text-decoration: none;
   color: black;
@@ -184,18 +188,40 @@ body {
   font-size: 1.2rem;
 }
 
+.navbar-login {
+  text-decoration: none;
+  border-radius: 10px;
+  background-color: rgba(var(--accent-clr), 0.8);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-login:hover {
+  background-color: rgba(var(--accent-clr), 0.8);
+}
+
+.navbar-login:active {
+  background-color: rgba(var(--accent-clr), 1);
+}
+
+
 .landing-page {
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
+
 .landing-page--headings h1 {
   font-family: var(--anton);
   font-weight: 800;
   font-size: 3rem;
   width: 20ch;
 }
+
 .landing-page--headings span {
   color: rgb(var(--accent-clr));
 }
