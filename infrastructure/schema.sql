@@ -33,3 +33,12 @@ CREATE TABLE votes (
     voter_username VARCHAR(255) NOT NULL,
     weight INT DEFAULT 1
 );
+
+DROP TABLE IF EXISTS `news`
+CREATE TABLE news (
+    news_id INT PRIMARY KEY AUTO_INCREMENT,
+    submission_id INT NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL
+);
