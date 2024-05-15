@@ -35,6 +35,7 @@ class TestUserApis(unittest.TestCase):
         response = self.test_client.get("/challenges")
         assert response.status_code == 200
         assert response.json() == []
+
         # link project repo to submission
         test_challenge_submission = create_test_challenge_submission()
         response = self.test_client.post(
@@ -42,3 +43,15 @@ class TestUserApis(unittest.TestCase):
             json={"link": "http://sample-submission-repository.com"},
         )
         assert response.status_code == 200
+
+        # Get details of project submission
+        response = self.test_client.get(f'/challenges/submission/{test_challenge_submission[0]}')
+        assert response.status_code == 200
+        assert response.json() == [{'submission_id': 1, 'challenge_id': '1', 'username': 'TestUser', 'code_repository': 'http://sample-submission-repository.com'}]
+
+        # Get details of nonexistent submission
+        response = self.test_client.get(f'/challenges/submission/999')
+        assert response.status_code == 404
+
+    
+
