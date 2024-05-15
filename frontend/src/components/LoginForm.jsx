@@ -1,8 +1,11 @@
 import React from "react";
-import { useState } from "react";
 import axios from "axios";
+
 import FormInput from "./FormInput";
+
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useUserStatus from "../hooks/useUserStatus";
 
 const LoginForm = () => {
   const [loginData, setLoginData] = useState({
@@ -10,6 +13,7 @@ const LoginForm = () => {
     password: "",
   });
 
+  const { setIsLoggedIn } = useUserStatus()
   const navigate = useNavigate();
 
   const loginInputs = [
@@ -35,11 +39,9 @@ const LoginForm = () => {
     },
   ];
 
-  // TODO: Add back POST functionality after validation
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // TODO: Add error handling for unauthorized login by non-existing user credentials
     try {
       const response = await axios.post(
         "http://localhost:8080/users/login",
@@ -53,6 +55,7 @@ const LoginForm = () => {
       );
 
       if (response.status === 200) {
+        setIsLoggedIn(true)
         navigate("/home");
       }
     } catch (error) {

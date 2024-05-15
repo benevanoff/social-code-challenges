@@ -62,10 +62,6 @@ const RegisterForm = () => {
 
   useEffect(() => {
     const isValid = registrationInputs.every((input) => {
-      console.log(
-        `==> ${input.name} is valid: ` +
-          validateInput(input, registrationData[input.name]),
-      );
       return validateInput(input, registrationData[input.name]);
     });
 
@@ -91,7 +87,6 @@ const RegisterForm = () => {
         if (response.status === 200) {
           navigate("/home");
         }
-        console.log(response);
       }
     } catch (error) {
       console.log(error.message);
