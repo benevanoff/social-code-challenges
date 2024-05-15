@@ -169,13 +169,30 @@ async def get_submission_details(submission_id: int, sql_client=Depends(get_db))
         query_result = await cur.fetchall()
     return query_result
 
+# TODO: Create class for news post request
+class CreateNewsRequest(BaseModel):
+    title: str
+    description: str
+
 
 @app.post("/challenges/submission/news/create/{submission_id}")
-async def post_news(submission_id: int):
+async def post_news(submission_id: int, request_body: CreateNewsRequest, session_id: str = Cookie(None), sql_client=Depends(get_db)):
     """
-    TODO
+    When users have a submission, they can post news updates. 
+    The news updates will be linked to the submission through submission_id.
+    It will be added to the `news` table.
     """
-    pass
+
+    whoami_response = await whoami(session_id)
+    if not whoami_response:
+        raise HTTPException(status_code=401)
+    username = whoami_response.get("username")
+
+    async with sql_client.cursor() as cur:
+        await cur.execute(
+            "INSERT INTO news (submission_id, username, title, description) VALUES (%s, %s, %s, %s)", (submission_id, username, request_body.title, request_body.description)
+        )
+    return 200
 
 
 class VoteRequest(BaseModel):
