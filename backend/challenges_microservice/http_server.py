@@ -162,14 +162,17 @@ async def get_submission_details(submission_id: int, sql_client=Depends(get_db))
     """
 
     async with sql_client.cursor() as cur:
+
         await cur.execute(
             "SELECT * FROM submissions WHERE submission_id = %s",
             (submission_id),
         )
         query_result = await cur.fetchall()
+        if not query_result:
+            raise HTTPException(status_code=404)
+
     return query_result
 
-# TODO: Create class for news post request
 class CreateNewsRequest(BaseModel):
     title: str
     description: str
