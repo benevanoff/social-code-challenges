@@ -1,7 +1,7 @@
-version: '3'
+version: "3"
 
 services:
-# Dependency Services
+  # Dependency Services
   db_mysql: # MySQL Server
     build:
       context: .
@@ -12,10 +12,10 @@ services:
       - db_mysql:/var/lib/mysql
 
   redis: # Redis Server used for Session Caching
-    image: 'redis:alpine'
+    image: "redis:alpine"
     command: redis-server --requirepass yourpasswordkkfkfa
 
-# Application Servers
+  # Application Servers
   users_microservice:
     build:
       context: ../backend/users_microservice
@@ -40,9 +40,10 @@ services:
       dockerfile: ../infrastructure/Dockerfile.frontend
     volumes:
       - ../frontend:/app
-      - /app/node_modules
+      # - /app/node_modules
     ports:
       - 80:5173
 
 volumes:
   db_mysql:
+

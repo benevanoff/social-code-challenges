@@ -34,7 +34,7 @@ CREATE TABLE votes (
     weight INT DEFAULT 1
 );
 
-DROP TABLE IF EXISTS `news`
+DROP TABLE IF EXISTS `news`;
 CREATE TABLE news (
     news_id INT PRIMARY KEY AUTO_INCREMENT,
     submission_id INT NOT NULL,
