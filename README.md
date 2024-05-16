@@ -1,5 +1,7 @@
 # Code Challenge Social Leaderboard
 
+![Tests Badge](https://github.com/benevanoff/social-code-challenges/actions/workflows/test.yml/badge.svg)
+
 ## Overview
 
 The objective is to create a social platform centered around coding challenges.
