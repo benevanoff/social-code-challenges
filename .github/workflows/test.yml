@@ -10,26 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout Repository
       uses: actions/checkout@v2
 
     - name: Set up Docker
       uses: docker/setup-buildx-action@v2
 
-    - name: Build and run Docker containers
+    - name: Build and Run Docker Containers
       run: |
         cd infrastructure
         docker compose up --build -d
 
-    - name: Wait for services to be up
-      run: sleep 20
-
-    - name: Install dependencies
+    - name: Install Dependencies
       run: |
         cd backend/challenges_microservice
         pip install -r requirements.txt
 
-    - name: Run tests
+    - name: Run Challenges Microservice Tests
       run: |
         cd backend/challenges_microservice
         python3 -m pytest
