@@ -20,7 +20,7 @@ const useUserStatus = () => {
         }
 
       } catch (error) {
-        console.error(error.response)
+        if (error.response.status === 403) { }
       }
     }
 
