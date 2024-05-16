@@ -2,26 +2,37 @@ import React from "react";
 import { Link } from "react-router-dom";
 import useUserStatus from "../hooks/useUserStatus";
 import UserProfileButton from "./UserProfileButton";
-import LoginContext from "../context/LoginContext";
 
 const Navbar = () => {
 
-  // TODO: Conditionally render login button if user is not logged in. Need SessionCookie
-
   const { isLoggedIn, userData, isLoading } = useUserStatus()
-  // const { isLoggedIn } = useContext(LoginContext)
 
   return (
     <div className="navbar sticky">
-      <h1 className="navbar-title">Social Code Challenges</h1>
-      <nav className="navbar-links">
-        <Link to="/" className="navbar-challenges">
-          Challenges
-        </Link>
-        {(isLoggedIn && !isLoading) ? <UserProfileButton userData={userData} /> :
-          <Link to='/login' className="navbar-login">Login</Link>
-        }
-      </nav>
+      <Link to='/' className="navbar-title">Social Code Challenges</Link>
+
+      <div className="navbar-links-container">
+        <input type="checkbox" id="sidebar-active" />
+        <label className='open-sidebar-button' for='sidebar-active'>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" /></svg>
+        </label>
+
+
+        <label id='overlay' for='sidebar-active' />
+        <nav className="navbar-links">
+          <label className="close-sidebar-button" for='sidebar-active'>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
+          </label>
+
+          <Link to='/' className="navbar-home">Home</Link>
+          <Link to="/" className="navbar-challenges">
+            Challenges
+          </Link>
+          {(isLoggedIn && !isLoading) ? <UserProfileButton userData={userData} /> :
+            <Link to='/login' className="navbar-login">Login</Link>
+          }
+        </nav>
+      </div>
     </div>
   );
 };
