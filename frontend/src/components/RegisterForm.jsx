@@ -85,7 +85,7 @@ const RegisterForm = () => {
             password: password,
             email: email,
           },
-          { headers: { "Content-Type": "application/json" } },
+          { headers: { "Content-Type": "application/json" }, withCredentials: true},
         );
 
         if (response.status === 200) {

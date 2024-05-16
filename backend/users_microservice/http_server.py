@@ -60,13 +60,16 @@ class RegistrationRequest(BaseModel):
     password: str
     email: str
 @app.post("/users/register")
-async def user_registration(request:RegistrationRequest, response:Response, sql_client=Depends(get_db)):
+async def user_registration(request:RegistrationRequest, response:Response, sql_client=Depends(get_db), session_storage=Depends(get_sessions)):
     """
     To register a new user, a new row is inserted to the users MySQL table including the user's email, username, and a salted [SHA-256 hash](https://en.wikipedia.org/wiki/SHA-2) of the user's password.
     """
     hashed_password = hash_password(request.password)
     async with sql_client.cursor() as cur:
         await cur.execute("INSERT IGNORE INTO users (username, password, email) VALUES (%s, %s, %s)", (request.username, hashed_password, request.email))
+    # create a session for the new user
+    session_id = session_storage.makeNewUserSession(request.username)
+    response.set_cookie(key="session_id", value=session_id)
     return 200
 
 # User Login Route
