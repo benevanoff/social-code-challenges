@@ -204,6 +204,10 @@ body {
   background-color: rgba(var(--accent-clr), 1);
 }
 
+.navbar-profile {
+  display: none;
+}
+
 .navbar svg {
   fill: black;
 }
@@ -214,7 +218,6 @@ body {
 
 .open-sidebar-button,
 .close-sidebar-button {
-
   display: none;
 }
 
@@ -245,6 +248,14 @@ body {
     display: block;
   }
 
+  .navbar-profile {
+    display: block;
+  }
+
+  .navbar-user-profile {
+    display: none;
+  }
+
   #sidebar-active:checked~.navbar-links {
     right: 0;
   }
@@ -257,6 +268,12 @@ body {
     left: 0;
     z-index: 9;
   }
+}
+
+
+
+.mobile-hidden {
+  display: none;
 }
 
 .landing-page {
