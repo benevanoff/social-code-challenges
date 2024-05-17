@@ -1,4 +1,5 @@
 import React from "react";
+import './navbar.css'
 import { Link } from "react-router-dom";
 import useUserStatus from '../../hooks/useUserStatus'
 import UserProfileButton from "./UserProfileButton";
@@ -29,7 +30,7 @@ const Navbar = () => {
           <Link to="/" className="navbar-challenges">
             Challenges
           </Link>
-          <Link className='navbar-profile' to={`/profile/${userData.username}`}>Profile</Link>
+          <Link className={`${!isLoggedIn ? 'hidden' : 'navbar-profile'}`} to={`/profile/${userData.username}`}>Profile</Link>
           {
             (isLoggedIn && !isLoading) ? <UserProfileButton id='profile-button' userData={userData} /> :
               <Link to='/login' className="navbar-login">Login</Link>

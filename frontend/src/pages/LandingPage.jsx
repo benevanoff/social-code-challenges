@@ -8,7 +8,6 @@ const LandingPage = () => {
         <h1>
           Learn through <span>coding challenges</span> with other developers!
         </h1>
-        <h3>Subheading text</h3>
       </div>
       <RegisterForm />
     </div>
