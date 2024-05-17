@@ -5,7 +5,7 @@ import FormInput from "./FormInput";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useUserStatus from "../hooks/useUserStatus";
+import useUserStatus from "../../hooks/useUserStatus";
 
 const LoginForm = () => {
   const [loginData, setLoginData] = useState({

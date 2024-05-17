@@ -1,30 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import useUserStatus from "../hooks/useUserStatus";
+import useUserStatus from '../../hooks/useUserStatus'
 import UserProfileButton from "./UserProfileButton";
 
 const Navbar = () => {
 
   const { isLoggedIn, userData, isLoading } = useUserStatus()
 
-  const [sidebarActive, setSidebarActive] = useState(false)
-
-
-  const handleChange = (e) => {
-
-    let profileButton = document.getElementById('profile-button')
-    setSidebarActive(e.target.checked)
-    // profileButton.classList.toggle('mobile-hidden')
-    // profileButton.classList.toggle('navbar-user-profile')
-
-  }
 
   return (
     <div className="navbar sticky">
       <Link to='/' className="navbar-title">Social Code Challenges</Link>
 
       <div className="navbar-links-container">
-        <input type="checkbox" id="sidebar-active" onChange={handleChange} />
+        <input type="checkbox" id="sidebar-active" />
         <label className='open-sidebar-button' htmlFor='sidebar-active'>
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" /></svg>
         </label>
@@ -42,7 +31,7 @@ const Navbar = () => {
           </Link>
           <Link className='navbar-profile' to={`/profile/${userData.username}`}>Profile</Link>
           {
-            (isLoggedIn && !isLoading) ? <UserProfileButton id='profile-button' userData={userData} sidebarActive={sidebarActive} /> :
+            (isLoggedIn && !isLoading) ? <UserProfileButton id='profile-button' userData={userData} /> :
               <Link to='/login' className="navbar-login">Login</Link>
           }
         </nav>
