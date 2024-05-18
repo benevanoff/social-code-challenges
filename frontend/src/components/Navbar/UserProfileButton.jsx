@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import ProfileDropdown from './ProfileDropdown'
 
 
 const UserProfileButton = ({ userData }) => {
@@ -15,9 +14,7 @@ const UserProfileButton = ({ userData }) => {
       }>
         {text}
       </button >
-      <ProfileDropdown className={`${dropdownActive ? 'dropdownActive' : 'dropdownInactive'}`}>
-        Hello
-      </ProfileDropdown >
+
     </>
   )
 }

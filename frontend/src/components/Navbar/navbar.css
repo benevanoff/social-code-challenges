@@ -44,7 +44,8 @@
   font-size: 1.2rem;
 }
 
-.navbar-links .navbar-login {
+.navbar-links .navbar-login,
+.navbar-logout {
   text-decoration: none;
   border-radius: 10px;
   background-color: rgba(var(--accent-clr), 0.8);
@@ -54,6 +55,7 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+
 
 .navbar-login:hover {
   background-color: rgba(var(--accent-clr), 0.8);

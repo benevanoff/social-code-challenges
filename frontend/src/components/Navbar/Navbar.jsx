@@ -1,12 +1,29 @@
 import React from "react";
 import './navbar.css'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useUserStatus from '../../hooks/useUserStatus'
 import UserProfileButton from "./UserProfileButton";
+import axios from "axios";
 
 const Navbar = () => {
 
   const { isLoggedIn, userData, isLoading } = useUserStatus()
+  const navigate = useNavigate()
+  const refreshPage = () => {
+    navigate(0)
+  }
+
+  const handleLogout = async () => {
+    const response = await axios.post('http://localhost:8080/users/logout', null, { withCredentials: true })
+    console.log(response)
+    if (response.status == 200) {
+      console.log(`Logged out ${userData.username} successfully`)
+      navigate('/')
+      refreshPage()
+    }
+    console.log('button clicked')
+  }
+
 
 
   return (
@@ -31,6 +48,8 @@ const Navbar = () => {
             Challenges
           </Link>
           <Link className={`${!isLoggedIn ? 'hidden' : 'navbar-profile'}`} to={`/profile/${userData.username}`}>Profile</Link>
+          <button className={`${isLoggedIn ? "navbar-logout" : 'hidden'}`} onClick={handleLogout}>Logout</button>
+
           {
             (isLoggedIn && !isLoading) ? <UserProfileButton id='profile-button' userData={userData} /> :
               <Link to='/login' className="navbar-login">Login</Link>
