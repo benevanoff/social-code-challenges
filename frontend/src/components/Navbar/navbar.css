@@ -42,10 +42,11 @@
   color: white;
   font-weight: 700;
   font-size: 1.2rem;
+  position: relative;
+  cursor: pointer
 }
 
-.navbar-links .navbar-login,
-.navbar-logout {
+.navbar-links .navbar-login {
   text-decoration: none;
   border-radius: 10px;
   background-color: rgba(var(--accent-clr), 0.8);
@@ -57,6 +58,61 @@
 }
 
 
+.profile-dropdown {
+  position: absolute;
+  background-color: red;
+  z-index: 10;
+  top: 80px;
+  right: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px 20px;
+  width: 200px;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.profile-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: 20px;
+  height: 20px;
+  width: 20px;
+  background: white;
+  transform: rotate(45deg);
+}
+
+.profile-dropdown.active {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.1s ease-out;
+}
+
+.profile-dropdown.active~#profile-dropdown-overlay {
+  background-color: red;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+}
+
+.profile-dropdown.active * {
+  display: block;
+}
+
+.profile-dropdown.inactive {
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.1s;
+}
+
 .navbar-login:hover {
   background-color: rgba(var(--accent-clr), 0.8);
 }
@@ -65,7 +121,8 @@
   background-color: rgba(var(--accent-clr), 1);
 }
 
-.navbar-profile {
+.navbar-profile,
+.navbar-logout {
   display: none;
 }
 
@@ -86,6 +143,16 @@
   display: none;
 }
 
+.navbar-logout {
+  text-decoration: none;
+  border-radius: 10px;
+  background-color: white;
+  font-weight: 600;
+  color: red;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
 
 @media (max-width: 768px) {
   .navbar-links {
@@ -114,13 +181,27 @@
     display: block;
   }
 
-  .navbar-profile {
+  .navbar-logout {
+    text-decoration: none;
+    border-radius: 10px;
+    background-color: white;
+    font-weight: 600;
+    color: red;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  /* Show in the sidebar */
+  .navbar-profile,
+  .navbar-logout {
     display: block;
   }
 
   .navbar-user-profile {
     display: none;
   }
+
 
   #sidebar-active:checked~.navbar-links {
     right: 0;
