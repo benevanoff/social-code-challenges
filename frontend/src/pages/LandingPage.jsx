@@ -1,5 +1,5 @@
 import React from "react";
-import RegisterForm from "../components/RegisterForm";
+import RegisterForm from '../components/FormComponents/RegisterForm'
 
 const LandingPage = () => {
   return (
@@ -8,7 +8,6 @@ const LandingPage = () => {
         <h1>
           Learn through <span>coding challenges</span> with other developers!
         </h1>
-        <h3>Subheading text</h3>
       </div>
       <RegisterForm />
     </div>

@@ -1,0 +1,125 @@
+.login-form--container,
+.register-form--container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.register-form--heading,
+.login-form--heading {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.register-form,
+.login-form {
+  width: 100%;
+}
+
+.register-form button,
+.login-form button {
+  margin: 10px 0 5px 0;
+  width: 100%;
+  padding: 0.6rem;
+  background-color: rgba(var(--accent-clr), 1);
+  color: white;
+  border: 1px solid;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.register-form button:hover,
+.login-form button:hover {
+  cursor: pointer;
+  background-color: rgba(var(--accent-clr), 0.8);
+}
+
+.register-form button:disabled,
+.login-form button:disabled {
+  cursor: not-allowed;
+}
+
+.register-form button:active,
+.login-form button:active {
+  background-color: rgba(var(--accent-clr), 1);
+}
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin: 1rem 0;
+  font-size: 14px;
+}
+
+.form-input label {
+  text-align: left;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.form-input input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  outline: none;
+  width: 100%;
+  font-size: 13px;
+}
+
+.form-input span {
+  color: red;
+  font-size: 0.8rem;
+  padding: 0 3px;
+  display: none;
+}
+
+/* Conditionally change styles based on focused property */
+.form-input input:invalid[focused="true"]~span {
+  display: block;
+}
+
+.form-input input:invalid[focused="true"] {
+  border: 1px solid red;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .login-form--container,
+  .register-form--container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+
+  .register-form--heading,
+  .login-form--heading {
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+
+}
+
+@media only screen and (min-width: 600px) {
+
+  .login-form--container,
+  .register-form--container {
+    width: 100%;
+    max-width: 500px;
+  }
+}
