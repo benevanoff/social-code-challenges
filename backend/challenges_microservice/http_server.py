@@ -64,6 +64,7 @@ class CreateChallengeRequest(BaseModel):
     start_date: int
     end_date: int
     description: str
+    name: str
 
 
 @app.post("/challenges/create")
@@ -82,7 +83,7 @@ async def create_challenge(
         raise HTTPException(status_code=401)
     async with sql_client.cursor() as cur:
         await cur.execute(
-            "INSERT INTO challenges (start_date, end_date, description) VALUES (%s,%s,%s)",
+            "INSERT INTO challenges (start_date, end_date, description, name) VALUES (%s,%s,%s,%s)",
             (
                 datetime.datetime.fromtimestamp(request_body.start_date).replace(
                     tzinfo=datetime.timezone.utc
@@ -91,6 +92,7 @@ async def create_challenge(
                     tzinfo=datetime.timezone.utc
                 ),
                 request_body.description,
+                request_body.name,
             ),
         )
     return 200
@@ -162,7 +164,6 @@ async def get_submission_details(submission_id: int, sql_client=Depends(get_db))
     """
 
     async with sql_client.cursor() as cur:
-
         await cur.execute(
             "SELECT * FROM submissions WHERE submission_id = %s",
             (submission_id),
@@ -173,15 +174,21 @@ async def get_submission_details(submission_id: int, sql_client=Depends(get_db))
 
     return query_result
 
+
 class CreateNewsRequest(BaseModel):
     title: str
     description: str
 
 
 @app.post("/challenges/submission/news/create/{submission_id}")
-async def post_news(submission_id: int, request_body: CreateNewsRequest, session_id: str = Cookie(None), sql_client=Depends(get_db)):
+async def post_news(
+    submission_id: int,
+    request_body: CreateNewsRequest,
+    session_id: str = Cookie(None),
+    sql_client=Depends(get_db),
+):
     """
-    When users have a submission, they can post news updates. 
+    When users have a submission, they can post news updates.
     The news updates will be linked to the submission through submission_id.
     It will be added to the `news` table.
     """
@@ -193,7 +200,8 @@ async def post_news(submission_id: int, request_body: CreateNewsRequest, session
 
     async with sql_client.cursor() as cur:
         await cur.execute(
-            "INSERT INTO news (submission_id, username, title, description) VALUES (%s, %s, %s, %s)", (submission_id, username, request_body.title, request_body.description)
+            "INSERT INTO news (submission_id, username, title, description) VALUES (%s, %s, %s, %s)",
+            (submission_id, username, request_body.title, request_body.description),
         )
     return 200
 
