@@ -154,6 +154,8 @@
   transition: background-color 0.2s ease;
 }
 
+/* .navbar-create-challenges {} */
+
 @media (max-width: 768px) {
   .navbar-links {
     flex-direction: column;

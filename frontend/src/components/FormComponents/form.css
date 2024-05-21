@@ -1,5 +1,12 @@
+.create-challenge-form.create-challenge-form--dates {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
 .login-form--container,
-.register-form--container {
+.register-form--container,
+.create-challenge-form--container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,7 +24,8 @@
 }
 
 .register-form,
-.login-form {
+.login-form,
+.create-challenge-form {
   width: 100%;
 }
 
@@ -51,6 +59,15 @@
   background-color: rgba(var(--accent-clr), 1);
 }
 
+.create-challenge-form label {
+  text-align: left;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+
+
+
 .form-input {
   display: flex;
   flex-direction: column;
@@ -65,7 +82,13 @@
   margin-bottom: 3px;
 }
 
-.form-input input {
+textarea {
+  resize: none;
+  min-height: 100px;
+}
+
+.form-input input,
+textarea {
   padding: 10px;
   border-radius: 10px;
   border: 1px solid gray;
@@ -89,6 +112,11 @@
 .form-input input:invalid[focused="true"] {
   border: 1px solid red;
 }
+
+.challenge-description {
+  width: 100%
+}
+
 
 @media only screen and (max-width: 600px) {
 
@@ -118,7 +146,8 @@
 @media only screen and (min-width: 600px) {
 
   .login-form--container,
-  .register-form--container {
+  .register-form--container,
+  .create-challenge-form--container {
     width: 100%;
     max-width: 500px;
   }
