@@ -73,7 +73,7 @@ async def user_registration(request:RegistrationRequest, response:Response, sql_
         await cur.execute("INSERT IGNORE INTO users (username, password, email) VALUES (%s, %s, %s)", (request.username, hashed_password, request.email))
     # create a session for the new user
     session_id = session_storage.makeNewUserSession(request.username)
-    response.set_cookie(key="session_id", value=session_id, httponly=True, samesite="None")
+    response.set_cookie(key="session_id", value=session_id, httponly=True)
     return 200
 
 # User Login Route
@@ -102,7 +102,7 @@ async def user_login(request:LoginRequest, response:Response, sql_client=Depends
     # add Redis entry {session_id:username} with 2 hour timeout
     session_id = session_storage.makeNewUserSession(request.username)
     # return session id in response body and cookie
-    response.set_cookie(key="session_id", value=session_id, httponly=True, samesite="None")
+    response.set_cookie(key="session_id", value=session_id, httponly=True)
     
     return 200
 
