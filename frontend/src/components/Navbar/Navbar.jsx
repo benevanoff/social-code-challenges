@@ -47,7 +47,7 @@ const Navbar = () => {
           </label>
 
           <Link to='/' className="navbar-home">Home</Link>
-          <Link to="/" className="navbar-challenges">
+          <Link to="/challenges" className="navbar-challenges">
             Challenges
           </Link>
           {profileLink}
@@ -55,7 +55,6 @@ const Navbar = () => {
           {
             (isLoggedIn && !isLoading) ? (
               <>
-
                 <UserProfileButton id='profile-button' userData={userData} logoutButton={logoutButton} profileLink={profileLink} />
               </>
             )
