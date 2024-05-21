@@ -16,7 +16,7 @@ CREATE TABLE challenges (
     start_date VARCHAR(255) NOT NULL,
     end_date VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL
 );
 
 DROP TABLE IF EXISTS `submissions`;
