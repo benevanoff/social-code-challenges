@@ -24,6 +24,7 @@ const App = () => {
             <Route path="/home" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/challenges" element={<ChallengesPage />} />
+            <Route path="/challenges/create" element={<ChallengesPage />} />
             <Route path="/profile/:username" element={<ProfilePage />} />
           </Routes>
         </LoginContext.Provider>

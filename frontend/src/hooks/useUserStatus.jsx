@@ -25,6 +25,7 @@ const useUserStatus = () => {
     }
 
     getUserData()
+    console.log(userData)
   }, [isLoggedIn])
 
 
