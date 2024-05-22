@@ -6,6 +6,8 @@ import aiomysql
 from pydantic import BaseModel
 from typing import Optional
 
+from starlette.types import HTTPExceptionHandler
+
 from sql_client import get_db
 
 from fastapi import FastAPI, Request, Depends, HTTPException, Response, Cookie
@@ -172,6 +174,22 @@ async def get_submission_details(submission_id: int, sql_client=Depends(get_db))
         if not query_result:
             raise HTTPException(status_code=404)
 
+    return query_result
+
+
+@app.get("/challenges/submissions/all/{challenge_id}")
+async def get_all_submissions(challenge_id: int, sql_client=Depends(get_db)):
+    """
+    Get all the submissions for `challenge_id`
+    """
+    async with sql_client.cursor() as cur:
+        await cur.execute(
+            "SELECT * FROM submissions WHERE challenge_id = %s",
+            (challenge_id),
+        )
+        query_result = await cur.fetchall()
+        if not query_result:
+            raise HTTPException(status_code=404)
     return query_result
 
 
