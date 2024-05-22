@@ -1,5 +1,5 @@
 import React from 'react'
-import CreateChallengeForm from '../components/FormComponents/CreateChallengeForm'
+import CreateChallengeForm from '../components/form-components/CreateChallengeForm'
 
 const CreateChallengePage = () => {
   return (
