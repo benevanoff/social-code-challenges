@@ -41,17 +41,14 @@ const CreateChallengeForm = () => {
       min: formattedDate
     }
   ]
+
   const onChange = (e) => {
     e.preventDefault()
     setChallengeData({
       ...challengeData,
       [e.target.name]: e.target.value,
     })
-    console.log(challengeData)
   }
-
-  // Formula for EPOCH TIMESTAMP
-  // const seconds = Math.floor(Date.now() / 1000);
 
   const convertToTimestamp = (date) => {
     return Math.floor(new Date(date).getTime() / 1000)
@@ -61,12 +58,6 @@ const CreateChallengeForm = () => {
     e.preventDefault()
     const startDate = convertToTimestamp(challengeData.start_date)
     const endDate = convertToTimestamp(challengeData.end_date)
-    console.log({
-      name: challengeData.name,
-      description: challengeData.description,
-      start_date: startDate,
-      end_date: endDate
-    })
 
     try {
       const response = await axios.post(
@@ -85,7 +76,6 @@ const CreateChallengeForm = () => {
         },
       )
 
-
       if (response.status === 200) {
         console.log('Challenge Created Successfully')
       }
@@ -102,7 +92,7 @@ const CreateChallengeForm = () => {
       <form className='create-challenge-form'>
         <FormInput {...createChallengeInputs[0]} onChange={onChange} />
         <div>
-          <label htmlFor='challengeDescription'>Description</label>
+          <label htmlFor='description'>Description</label>
           <textarea name={createChallengeInputs[1].name} className='challenge-description' onChange={onChange} placeholder='Write a short description of the project...'></textarea>
         </div>
         <div className='create-challenge-form--dates'>
