@@ -8,7 +8,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ChallengesPage from "./pages/ChallengesPage"
 import CreateChallengePage from "./pages/CreateChallengePage";
 
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/navbar-components/Navbar";
 
 import LoginContext from "./context/LoginContext";
 
