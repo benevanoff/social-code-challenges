@@ -11,6 +11,7 @@ import CreateChallengePage from "./pages/CreateChallengePage";
 import Navbar from "./components/navbar-components/Navbar";
 
 import LoginContext from "./context/LoginContext";
+import ChallengeDetailsPage from "./pages/ChallengeDetailsPage";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -26,6 +27,7 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/challenges" element={<ChallengesPage />} />
             <Route path="/challenges/create" element={<CreateChallengePage />} />
+            <Route path="/challenges/:challenge_id" element={<ChallengeDetailsPage />} />
             <Route path="/profile/:username" element={<ProfilePage />} />
           </Routes>
         </LoginContext.Provider>

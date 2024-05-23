@@ -4,13 +4,11 @@ import ChallengeItem from '../components/challenge-components/ChallengeItem'
 
 
 const ChallengesPage = () => {
-  // Call useFetchAllChallenges Hook then render results
-  const { allChallengesData, isLoading, error } = useFetchAllChallenges()
+  const { allChallengesData, isLoading } = useFetchAllChallenges()
   return (
     <div className='challenges-page'>
       <h2 className='challenges-page--title'>Challenges</h2>
       {
-        // If done loading, pass in data and render
         !isLoading && (
           <div className='challenges--container'>
             {allChallengesData.map((challengeData) => (
