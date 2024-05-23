@@ -62,6 +62,19 @@ async def get_challenges(sql_client=Depends(get_db)):
     return query_result
 
 
+@app.get("/challenges/{challenge_id}")
+async def get_challenge_details(challenge_id: int, sql_client=Depends(get_db)):
+    """
+    Get challenge details
+    """
+    async with sql_client.cursor() as cur:
+        await cur.execute("SELECT * FROM challenges WHERE id=%s", (challenge_id))
+        query_result = await cur.fetchall()
+        if not query_result:
+            raise HTTPException(status_code=404)
+    return query_result
+
+
 class CreateChallengeRequest(BaseModel):
     start_date: int
     end_date: int
