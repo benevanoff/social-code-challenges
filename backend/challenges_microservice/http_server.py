@@ -127,9 +127,17 @@ async def register_for_challenge(
         raise HTTPException(status_code=401)
     async with sql_client.cursor() as cur:
         await cur.execute(
-            "INSERT INTO submissions (username, challenge_id) VALUES (%s,%s)",
+            "SELECT * FROM submissions WHERE username=%s and challenge_id=%s",
             (whoami_response.get("username"), challenge_id),
         )
+        is_user_registered = await cur.fetchall()
+        if not is_user_registered:
+            await cur.execute(
+                "INSERT INTO submissions (username, challenge_id) VALUES (%s,%s)",
+                (whoami_response.get("username"), challenge_id),
+            )
+        else:
+            raise HTTPException(status_code=409)
     return 200
 
 
