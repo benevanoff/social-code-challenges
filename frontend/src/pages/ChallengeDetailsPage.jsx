@@ -5,13 +5,20 @@ import { useParams } from 'react-router-dom'
 
 import useFetchChallengeDetails from '../hooks/useFetchChallengeDetails'
 import useFetchRegisteredUsers from '../hooks/useFetchRegisteredUsers'
+import useFetchAllSubmissions from '../hooks/useFetchAllSubmissions'
 
+import SubmissionItem from '../components/challenge-components/SubmissionItem'
+import useFetchSubmissionLeaderboard from '../hooks/useFetchSubmissionLeaderboard'
 
 const ChallengeDetailsPage = () => {
   const { challenge_id: challengeId } = useParams()
 
   const { challengeDetails, isLoading } = useFetchChallengeDetails(challengeId)
   const { isRegistered, isLoading: isRegisteredUsersLoading } = useFetchRegisteredUsers(challengeId)
+  const { submissionLeaderboard, isLoading: isSubmissionLeaderboardLoading } = useFetchSubmissionLeaderboard(challengeId)
+
+  // This is for checking if the current user has already linked a code_repository to their submission.
+  // const { allSubmissions, isLoading: isAllSubmissionsLoading } = useFetchAllSubmissions(challengeId)
 
   if (!isRegisteredUsersLoading)
     console.log('Is Registered ' + isRegistered)
@@ -43,6 +50,17 @@ const ChallengeDetailsPage = () => {
           <p>Title: {challengeDetails.name}</p>
           <p>Description: {challengeDetails.description}</p>
           <button onClick={register}>Register</button>
+        </div>
+      )
+    }
+
+    {
+      (!isSubmissionLeaderboardLoading && submissionLeaderboard) && (
+        <div>
+          top submissions
+          {submissionLeaderboard.map((submission) => (
+            <SubmissionItem {...submission} key={submission.submission_id} />
+          ))}
         </div>
       )
     }
