@@ -13,6 +13,8 @@
   text-align: left;
 }
 
+.challenges-details {}
+
 @media only screen and (max-width: 600px) {
   .challenges-page--title {
     font-size: 1.2rem;

@@ -13,6 +13,10 @@ const Navbar = () => {
     navigate(0)
   }
 
+  if (isLoading) {
+    return <div className="navbar"></div>
+  }
+
   const handleLogout = async () => {
     const response = await axios.post('http://localhost:8080/users/logout', null, { withCredentials: true })
     console.log(response)
