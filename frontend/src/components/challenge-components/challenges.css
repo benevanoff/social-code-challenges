@@ -1,24 +1,110 @@
+/* Challenges Page */
 .challenges-page {
+  align-items: flex-start;
+  margin-top: 10vh;
+}
+
+.challenges-container {
   display: grid;
+  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
 }
 
 .challenge-item {
   background: white;
-  margin: 2rem;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.challenges-page--title {
-  font-family: var(--anton);
-  font-weight: 400;
-  text-align: left;
+.challenges-page__title {
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
-.challenges-details {}
+.challenge-item__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
 
+.challenge-item__description {
+  color: rgb(var(--sub-text-clr));
+}
+
+.challenge-item__dates {}
+
+.button.challenge-item__button {
+  width: 100%;
+}
+
+/* Challenge Details */
+.challenge-details__page {
+  display: grid;
+  justify-items: center;
+  margin-inline: 160px;
+  padding: 2rem 0;
+}
+
+.challenge-details {
+  background-color: white;
+  padding: 1.5rem 2rem;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.challenge-details__title-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+.challenge-details__dates {
+  color: rgb(var(--sub-text-clr))
+}
+
+.challenge-details__name {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* Mobile */
 @media only screen and (max-width: 600px) {
   .challenges-page--title {
     font-size: 1.2rem;
   }
 
+  .challenges-page {
+    margin-inline: 16px;
+  }
+}
 
+/*Mobile to Tablet*/
+/* @media only screen and (min-width: 600px) {} */
+
+@media only screen and (min-width: 600px) {
+  .challenges-page {
+    margin-inline: 32px;
+  }
+}
+
+/* @media only screen and (min-width: 768px) */
+@media only screen and (min-width: 992px) {
+
+  .challenges-page {
+    margin-inline: 32px;
+  }
+}
+
+/* Desktops */
+@media only screen and (min-width: 1200px) {
+
+  .challenges-page {
+
+    margin-inline: 160px;
+  }
 }

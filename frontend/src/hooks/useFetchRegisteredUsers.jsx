@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import useUserStatus from './useUserStatus'
 import axios from 'axios'
 import UserDataContext from '../context/UserDataContext'
 
@@ -14,10 +13,6 @@ const useFetchRegisteredUsers = (challengeId) => {
       try {
         const response = await axios.get(`http://localhost:8000/challenges/registrations/${challengeId}`, { withCredentials: true })
         const data = await response.data
-
-        console.log('RESPONSE: ', response)
-        console.log('RESPONSE DATA: ', data)
-        console.log('USERNAME: ', userData.username)
 
         if (response.status === 200 && data.includes(userData.username)) {
           setIsRegistered(true)

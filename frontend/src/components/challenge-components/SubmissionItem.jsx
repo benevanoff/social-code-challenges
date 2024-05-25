@@ -1,7 +1,6 @@
 import React from 'react'
 
 const SubmissionItem = (props) => {
-  console.log(props)
   return (
     <div>
       submission item by {props.username}

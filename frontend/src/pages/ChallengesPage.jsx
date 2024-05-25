@@ -7,10 +7,10 @@ const ChallengesPage = () => {
   const { allChallengesData, isLoading } = useFetchAllChallenges()
   return (
     <div className='challenges-page'>
-      <h2 className='challenges-page--title'>Challenges</h2>
+      <h2 className='challenges-page__title'>Challenges</h2>
       {
         !isLoading && (
-          <div className='challenges--container'>
+          <div className='challenges-container'>
             {allChallengesData.map((challengeData) => (
               <ChallengeItem key={challengeData.id} {...challengeData} />
             ))}

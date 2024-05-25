@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import axios from 'axios'
 
 import { useParams } from 'react-router-dom'
@@ -7,23 +7,30 @@ import useFetchChallengeDetails from '../hooks/useFetchChallengeDetails'
 import useFetchRegisteredUsers from '../hooks/useFetchRegisteredUsers'
 import useFetchAllSubmissions from '../hooks/useFetchAllSubmissions'
 
-import SubmissionItem from '../components/challenge-components/SubmissionItem'
-import useFetchSubmissionLeaderboard from '../hooks/useFetchSubmissionLeaderboard'
+import UserDataContext from '../context/UserDataContext'
+
+import SubmissionLeaderboard from '../components/challenge-components/SubmissionLeaderboard'
+import ChallengeDetails from '../components/challenge-components/ChallengeDetails'
 
 const ChallengeDetailsPage = () => {
   const { challenge_id: challengeId } = useParams()
+  const { userData } = useContext(UserDataContext)
+  const [hasRepository, setHasRepository] = useState(false)
 
   const { challengeDetails, isLoading } = useFetchChallengeDetails(challengeId)
   const { isRegistered, isLoading: isRegisteredUsersLoading } = useFetchRegisteredUsers(challengeId)
-  const { submissionLeaderboard, isLoading: isSubmissionLeaderboardLoading } = useFetchSubmissionLeaderboard(challengeId)
 
   // This is for checking if the current user has already linked a code_repository to their submission.
-  // const { allSubmissions, isLoading: isAllSubmissionsLoading } = useFetchAllSubmissions(challengeId)
+  const { allSubmissions, isLoading: isAllSubmissionsLoading } = useFetchAllSubmissions(challengeId)
 
-  if (!isRegisteredUsersLoading)
-    console.log('Is Registered ' + isRegistered)
-  // Check if user registered for challenge.
-
+  useEffect(() => {
+    if (!isAllSubmissionsLoading && allSubmissions) {
+      const hasSubmissionWithoutRepo = allSubmissions.some(
+        (submission) => submission.username === userData.username && submission.code_repository === null
+      );
+      setHasRepository(!hasSubmissionWithoutRepo);
+    }
+  }, [isAllSubmissionsLoading, allSubmissions]);
 
 
   // If user is not registered, then show register button
@@ -42,28 +49,25 @@ const ChallengeDetailsPage = () => {
     }
 
   }
-  return <>
-    {
-      !isLoading && (
-        <div className='challenge-details'>
-          Challenge Number {challengeId}
-          <p>Title: {challengeDetails.name}</p>
-          <p>Description: {challengeDetails.description}</p>
-          <button onClick={register}>Register</button>
-        </div>
-      )
-    }
 
-    {
-      (!isSubmissionLeaderboardLoading && submissionLeaderboard) && (
-        <div>
-          top submissions
-          {submissionLeaderboard.map((submission) => (
-            <SubmissionItem {...submission} key={submission.submission_id} />
-          ))}
-        </div>
-      )
-    }
+  console.log(challengeDetails)
+  return <>
+    <div className='challenge-details__page'>
+
+      {
+        !isLoading && (
+          <ChallengeDetails challengeDetails={challengeDetails} userData={userData} >
+            {
+              hasRepository ? <button onClick={register}>Register</button> :
+                <button>Link Project</button>
+            }
+          </ChallengeDetails>
+        )
+      }
+    </div>
+
+
+    <SubmissionLeaderboard></SubmissionLeaderboard>
   </>
 }
 

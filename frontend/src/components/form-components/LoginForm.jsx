@@ -77,8 +77,8 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login-form--container">
-      <h1 className="login-form--heading">Login</h1>
+    <div className="login-form-container">
+      <h1 className="login-form__heading">Login</h1>
       <form className="login-form">
         {loginInputs.map((input) => (
           <FormInput
@@ -90,7 +90,7 @@ const LoginForm = () => {
         ))}
         <button
           type="submit"
-          className="login-form--submit"
+          className="button login-form__button"
           onClick={handleSubmit}
         >
           Submit

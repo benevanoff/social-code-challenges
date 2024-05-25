@@ -21,14 +21,13 @@ const useFetchAllSubmissions = (challengeId) => {
 
       } catch (error) {
         console.log(error.message)
-
       }
 
     }
     fetchAllSubmissions()
   }, [challengeId])
 
-  return { allSubmissions }
+  return { allSubmissions, isLoading }
 }
 
 export default useFetchAllSubmissions

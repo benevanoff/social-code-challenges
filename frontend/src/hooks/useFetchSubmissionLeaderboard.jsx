@@ -12,7 +12,6 @@ const useFetchSubmissionLeaderboard = (challengeId) => {
         const response = await axios.get(`http://localhost:8000/challenges/submissions/${challengeId}`)
         const data = await response.data
         if (response.status === 200) {
-          console.log(data)
           setSubmissionLeaderboard(data)
           setIsLoading(false)
         }
