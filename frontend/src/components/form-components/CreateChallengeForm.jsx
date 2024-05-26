@@ -87,20 +87,20 @@ const CreateChallengeForm = () => {
   }
 
   return (
-    <div className='create-challenge-form--container'>
-      <h3 className='create-challenge-form--heading'>Create Challenge</h3>
+    <div className='create-challenge-form-container'>
+      <h3 className='create-challenge-form__heading'>Create Challenge</h3>
       <form className='create-challenge-form'>
         <FormInput {...createChallengeInputs[0]} onChange={onChange} />
         <div>
           <label htmlFor='description'>Description</label>
-          <textarea name={createChallengeInputs[1].name} className='challenge-description' onChange={onChange} placeholder='Write a short description of the project...'></textarea>
+          <textarea name={createChallengeInputs[1].name} className='create-challenge-form__description' onChange={onChange} placeholder='Write a short description of the project...'></textarea>
         </div>
-        <div className='create-challenge-form--dates'>
+        <div className='create-challenge-form__dates'>
           <FormInput {...createChallengeInputs[2]} onChange={onChange} min={formattedDate} />
           <FormInput {...createChallengeInputs[3]} onChange={onChange} min={formattedDate} />
         </div>
       </form>
-      <button type='submit' className='create-challenges-form--submit' onClick={handleSubmit}>
+      <button type='submit' className='button create-challenges-form__button' onClick={handleSubmit}>
         Submit
       </button>
     </div>

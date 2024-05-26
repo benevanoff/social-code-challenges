@@ -11,6 +11,7 @@
   --bg-clr: 245, 245, 245;
   --accent-clr: 220, 107, 25;
   --sub-text-clr: 80, 80, 80;
+  --light-gray-bg-clr: 210, 210, 210;
 
   /* Fonts */
   --ff-anton: "Anton";
@@ -45,7 +46,8 @@ body {
   color: rgb(var(--accent-clr));
 }
 
-.login-page {
+.login-page,
+.create-challenge-page {
   display: grid;
   justify-items: center;
   align-items: center;

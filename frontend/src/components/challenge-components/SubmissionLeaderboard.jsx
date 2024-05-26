@@ -5,16 +5,17 @@ import useFetchSubmissionLeaderboard from '../../hooks/useFetchSubmissionLeaderb
 
 const SubmissionLeaderboard = ({ challengeId }) => {
 
-  const { submissionLeaderboard, isLoading } = useFetchSubmissionLeaderboard(challengeId)
+  const { submissionLeaderboard, isLoading, error } = useFetchSubmissionLeaderboard(challengeId)
   return <>
-
-    <div>
-
+    <div className='submission-leaderboard'>
       {
-        (!isLoading && submissionLeaderboard !== null) &&
-        submissionLeaderboard.map((submission) => (
-          <SubmissionItem key={submission.submission_id} {...submission} />
-        ))
+        (!isLoading && !error) ?
+          (
+            submissionLeaderboard.map((submission) => (
+              <SubmissionItem key={submission.submission_id} {...submission} />
+            )))
+          :
+          <div className='no-submissions'>No submissions for this Challenge</div>
       }
     </div>
   </>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ChallengeDetails = ({ challengeDetails, userData }) => {
+const ChallengeDetails = ({ challengeDetails, children }) => {
   const { name, description, start_date, end_date } = challengeDetails
 
   const formatDate = (dateStr) => {
@@ -20,6 +20,7 @@ const ChallengeDetails = ({ challengeDetails, userData }) => {
         <span className='challenge-details__dates'>{formatDate(start_date)} - {formatDate(end_date)}</span>
       </div>
       <p className='challenge-details__description'>{description}</p>
+      {children}
     </div>
   )
 }

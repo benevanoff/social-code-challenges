@@ -37,11 +37,10 @@
 }
 
 .login-form__button,
-.register-form__button {
+.register-form__button,
+.create-challenges-form__button {
   width: 100%;
 }
-
-
 
 .form-input {
   display: flex;

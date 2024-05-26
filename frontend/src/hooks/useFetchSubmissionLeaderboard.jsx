@@ -5,6 +5,7 @@ const useFetchSubmissionLeaderboard = (challengeId) => {
   // Route
   const [submissionLeaderboard, setSubmissionLeaderboard] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const fetchSubmissionLeaderboard = async () => {
@@ -13,11 +14,12 @@ const useFetchSubmissionLeaderboard = (challengeId) => {
         const data = await response.data
         if (response.status === 200) {
           setSubmissionLeaderboard(data)
-          setIsLoading(false)
         }
 
-      } catch (error) {
-        console.log(error.message)
+      } catch (e) {
+        setError(e)
+      } finally {
+        setIsLoading(false)
       }
 
     }
@@ -28,7 +30,7 @@ const useFetchSubmissionLeaderboard = (challengeId) => {
 
 
 
-  return { submissionLeaderboard, isLoading }
+  return { submissionLeaderboard, isLoading, error }
 }
 
 export default useFetchSubmissionLeaderboard
