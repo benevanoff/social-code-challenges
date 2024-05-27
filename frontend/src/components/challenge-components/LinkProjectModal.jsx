@@ -17,9 +17,12 @@ const LinkProjectModal = ({ allSubmissions, userData }) => {
   }, [])
 
   const getUserSubmissionId = () => {
-    for (let submission of allSubmissions) {
-      if (submission.username === userData.username)
-        setUserSubmissionId(submission.submission_id)
+    if (allSubmissions) {
+
+      for (let submission of allSubmissions) {
+        if (submission.username === userData.username)
+          setUserSubmissionId(submission.submission_id)
+      }
     }
   }
 
@@ -59,8 +62,11 @@ const LinkProjectModal = ({ allSubmissions, userData }) => {
           <div className='link-project-modal__overlay' onClick={toggleLinkProjectModal} />
           <div className='link-project-modal__content'>
             <h3 className='link-project-modal__title'>Link Project Repository</h3>
-            <label htmlFor='link-project-modal__input'>Project Link</label>
-            <input name='link-project-modal__input' type='url' onChange={onChange} placeholder='Link to project repository' />
+            <div className='link-project-modal__input-group'>
+
+              <label htmlFor='link-project-modal__input'>Project Link</label>
+              <input className='link-project-modal__input' name='link-project-modal__input' type='url' onChange={onChange} placeholder='Link to project repository' />
+            </div>
             <div className='link-project-modal__button-group'>
               <button className='button link-project-modal__button' type='submit' onClick={submitProject}>Submit</button>
               <button className='link-project-modal__close' onClick={toggleLinkProjectModal}>Close</button>

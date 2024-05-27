@@ -50,9 +50,6 @@ const ChallengeDetailsPage = () => {
   }
 
 
-
-  // If user is not registered, then show register button
-  // Else show link project
   return <>
     <div className='challenge-details-page'>
       {
@@ -61,7 +58,7 @@ const ChallengeDetailsPage = () => {
             {
               isRegistered ?
                 (hasRepository ?
-                  <button className='button'>View Submission</button>
+                  <button onClick={} className='button'>View Submission</button>
                   : <LinkProjectModal allSubmissions={allSubmissions} userData={userData} />
                 )
                 : <button className='button' onClick={register}>Register</button>
