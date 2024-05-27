@@ -13,21 +13,22 @@ const Navbar = () => {
     navigate(0)
   }
 
+
   const handleLogout = async () => {
     const response = await axios.post('http://localhost:8080/users/logout', null, { withCredentials: true })
-    console.log(response)
     if (response.status == 200) {
       console.log(`Logged out ${userData.username} successfully`)
       navigate('/')
       refreshPage()
     }
   }
-
   const profileLink = (<Link className={`${!isLoggedIn ? 'hidden' : 'navbar-profile'}`} to={`/profile/${userData.username}`}>Profile</Link>
   )
 
   const logoutButton = (<button className={`${isLoggedIn ? "navbar-logout" : 'hidden'}`} onClick={handleLogout}>Logout</button>
   )
+
+  const createChallenge = (<Link className={`${userData.is_admin === 1 ? 'navbar-create-challenge' : 'hidden'}`} to='/challenges/create'>Create Challenge</Link>)
 
   return (
     <div className="navbar sticky">
@@ -46,16 +47,16 @@ const Navbar = () => {
             <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
           </label>
 
-          <Link to='/' className="navbar-home">Home</Link>
-          <Link to="/" className="navbar-challenges">
+          <Link to='/home' className="navbar-home">Home</Link>
+          <Link to="/challenges" className="navbar-challenges">
             Challenges
           </Link>
+          {createChallenge}
           {profileLink}
           {logoutButton}
           {
             (isLoggedIn && !isLoading) ? (
               <>
-
                 <UserProfileButton id='profile-button' userData={userData} logoutButton={logoutButton} profileLink={profileLink} />
               </>
             )

@@ -8,11 +8,13 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Colors */
+  --bg-clr: 245, 245, 245;
   --accent-clr: 220, 107, 25;
-  --body-text-clr: 0, 0, 0;
+  --sub-text-clr: 80, 80, 80;
+  --light-gray-bg-clr: 210, 210, 210;
 
   /* Fonts */
-  --anton: "Anton";
+  --ff-anton: "Anton";
 }
 
 *,
@@ -33,7 +35,7 @@ body {
 }
 
 .landing-page--headings h1 {
-  font-family: var(--anton);
+  font-family: var(--ff-anton);
   font-weight: 800;
   font-size: 3rem;
   width: 20ch;
@@ -44,6 +46,39 @@ body {
   color: rgb(var(--accent-clr));
 }
 
+.login-page,
+.create-challenge-page {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  margin-top: 10vh;
+}
+
+.button {
+  margin: 10px 0 5px 0;
+  /* width: 100%; */
+  padding: 0.6rem;
+  background-color: rgba(var(--accent-clr), 1);
+  color: white;
+  border: 1px solid;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: rgba(var(--accent-clr), 0.8);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+}
+
+.button:active {
+  background-color: rgba(var(--accent-clr), 1);
+}
 
 @media only screen and (max-width: 600px) {
   .landing-page {

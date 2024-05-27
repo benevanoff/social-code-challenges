@@ -81,7 +81,7 @@ const RegisterForm = () => {
             password: password,
             email: email,
           },
-          { headers: { "Content-Type": "application/json" }, withCredentials: true},
+          { headers: { "Content-Type": "application/json" }, withCredentials: true },
         );
 
         if (response.status === 200) {
@@ -121,8 +121,8 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="register-form--container">
-      <h1 className="register-form--heading">Register</h1>
+    <div className="register-form-container">
+      <h1 className="register-form-heading">Register</h1>
       <form className="register-form">
         {registrationInputs.map((input) => (
           <FormInput
@@ -134,7 +134,7 @@ const RegisterForm = () => {
           />
         ))}
         <button
-          className="register-button"
+          className="button register-form__button"
           type="submit"
           onClick={handleSubmit}
           disabled={!formIsValid}
